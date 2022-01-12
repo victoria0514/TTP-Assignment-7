@@ -1,50 +1,41 @@
 import logo from './logo.svg';
-import React, { useState, useEffect } from "react";
-// import React from "react";
-import axios from "axios"
+import React, {Component} from 'react';
+import SearchField from './components/SearchField';
+import GifCard from './components/GifCard';
 import './App.css';
 
-//function App() {
-export default function App() {
-     const [data, setData] = useState(null);
-     const [loading, setLoading] = useState(true);
-     const [error, setError] = useState(null);
-    
-    useEffect(() => {
-    axios("http://api.giphy.com/v1/gifs/search?q=SEARCH+TERM+GOES+HERE&api_key=NktVZIpFmrTj0MkgLNgOpkSlNpqzNg7a")
-    .then((response) => {
-    setData(response.data);
+//We can also use ES6 classes to define components: (from lecture)
+class App extends Component {
+
+  // constructor and props
+  constructor(props) {
+    super(props);
+// Calling super props so this.state won't be undefined
+    this.state = {
+      data: []
+    }
+  }
+
+// mounting
+// By creating an instance of a component, it will be inserted into the DOM
+  componentDidMount = () => {
+    // when compond mounds, display the trending GIFs
+    let url='http://api.giphy.com/v1/gifs/trending?api_key=NktVZIpFmrTj0MkgLNgOpkSlNpqzNg7a';
+    fetch(url)
+
+    // Fetching data using promise
+    .then(response => response.json())
+    .then(response => {
+      this.setState({ data: response.data});
     })
-
-    .catch((error) => {
-    console.error("Error fetching data: ", error);
-    setError(error);
-    })
- 
-    .finally(() => {
-    setLoading(false);
-    });
-    }, []);
-
-// Code Adapted From: https://dev.to/olenadrugalya/ways-of-getting-data-from-api-in-react-2kpf (above but not sure if I want to do by axios or fetch API)
-// NOTE: above is axios
+    // if something goes wrong, will catch here
+    .catch(error => console.log(error));
+  }
 
 
-// going to use this as a hook. not done yet, needs more research
-// componentDidMount()
-// {
-//   fetch("http://api.giphy.com/v1/gifs/search?q=SEARCH+TERM+GOES+HERE&api_key=NktVZIpFmrTj0MkgLNgOpkSlNpqzNg7a")
-//   .then((response) => {
-//     setData(response.data);
-//     })
-//     .then((json) => {
-//       console.log(json);
-//       let x = json.data(() => {
-//         return data;
-//       });
-//       console.log(x);
-//     });
-// }
+
+
+
 
   return (
     <div className="App">
