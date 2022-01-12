@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import React, {Component} from 'react';
-import SearchField from './components/SearchField';
+import SearchForm from './components/SearchForm';
 import GifCard from './components/GifCard';
 import './App.css';
 
@@ -33,28 +33,31 @@ class App extends Component {
   }
 
 
-
-
-
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// update state from SearchForm component
+getData = newData => {
+  this.setState({data:newData});
 }
+
+// using render to pass everything in
+render() {
+  return (
+    <div className='img1'>
+      <div className='img2'>
+      <div className='searchForm'>
+        <SearchForm update={this.getData}/>
+      </div>
+      <div className='card'>
+        {this.state.data.map((item, index) => (
+          <GifCard key={index} url={item.images.original.url}/>
+        ))}
+      </div>
+      </div>
+    </div>
+  )
+}
+}
+
+// Couple Lines from render function and getData to new data - adapted from here:
+// URL: https://stackoverflow.com/questions/39866876/how-to-setstate-to-new-data-in-react
 
 export default App;
